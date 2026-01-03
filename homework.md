@@ -39,3 +39,10 @@
 39: Create POST /signup API to add data to databse 
 40: Push some documents using API calls from postman
 41: Error Handling using try catch block.
+42: Difference between JavaScript Object and JSON ? 
+43: Add the express.json middleware.
+44: Make your signup api dynamic to receive data from Postman.
+45: User.findOne with duplicate email ids , which object retured.
+46: API - Get user by email.
+47: API : Feed API -GET /feed - get all the users from the database.
+48: API - Get user by ID

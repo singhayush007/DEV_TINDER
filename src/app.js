@@ -259,28 +259,70 @@
 //    console.log("Server is Runnig on PORT 3000")
 // })
 
-// DATABASE CONNECTION
+// LOAD ENV VARIABLES (must be at the top)
+require("dotenv").config();
 
+// DATABASE CONNECTION
 const express = require("express");
 const connectDB = require("./config/database.js");
 const app = express();
 const User = require("./models/user");
-app.post("/signup", async (req, res) => {
-  // Creating a new Instance of the user Model
-  const user = new User({
-    firstName: "Ayush",
-    lastName: "Singh",
-    emailId: "ayush@gamil.com",
-    password: "Ayush@123",
-  });
+const user = require("./models/user");
 
+app.use(express.json());
+
+app.post("/signup", async (req, res) => {
   try {
+    const user = new User(req.body);
     await user.save();
-    res.semd("User Added Successfully");
+    res.status(201).send("User Added Successfully");
   } catch (err) {
-    res.status(400).send("Error saving the user" + err.message);
+    res.status(400).send("Error saving the user: " + err.message);
   }
 });
+
+// Get user by Email:
+
+app.get("/user", async (req, res) => {
+  const userEmail = req.body.emailId;
+
+  try {
+    const user = await User.find({ emailId: userEmail });
+    if (user.length === 0) {
+      return res.status(400).send("User not found");
+    } else {
+      return res.status(200).send(user);
+    }
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// FEED API - GET /feed -get all the users from the database
+app.get("/feed", async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.send(users);
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
+});
+
+// Get user by findone
+
+app.get("/user/findOne", async (req, res) => {
+  try {
+    const users = await User.findOne({ emailId: req.body.emailId });
+    if (!users) {
+      return res.status(500).send("User not found");
+    }
+    res.send(users);
+    res.send(users);
+  } catch (err) {
+    res.status(500).send("Something went wrong");
+  }
+});
+
 connectDB()
   .then(() => {
     console.log("DataBase Connection Established...");
@@ -289,5 +331,5 @@ connectDB()
     });
   })
   .catch((err) => {
-    console.error("DataBase connot be connected");
+    console.error("MongoDB Connection Error:", err.message);
   });
