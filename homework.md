@@ -45,4 +45,10 @@
 45: User.findOne with duplicate email ids , which object retured.
 46: API - Get user by email.
 47: API : Feed API -GET /feed - get all the users from the database.
-48: API - Get user by ID
+48: API - Get user by ID.
+49: Difference between PATCH and PUT
+50: Create a delete user API.
+51: Create an API update a user.
+52: Explore the mongoose documentation specially for models.
+53: What are options in a Model . findOneAndUpdate method , explore more about it.
+54: Update the user data with th refernce of UserId.

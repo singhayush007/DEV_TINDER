@@ -271,58 +271,118 @@ const user = require("./models/user");
 
 app.use(express.json());
 
-app.post("/signup", async (req, res) => {
-  try {
-    const user = new User(req.body);
-    await user.save();
-    res.status(201).send("User Added Successfully");
-  } catch (err) {
-    res.status(400).send("Error saving the user: " + err.message);
-  }
-});
+// app.post("/signup", async (req, res) => {
+//   try {
+//     const user = new User(req.body);
+//     await user.save();
+//     res.status(201).send("User Added Successfully");
+//   } catch (err) {
+//     res.status(400).send("Error saving the user: " + err.message);
+//   }
+// });
 
 // Get user by Email:
 
-app.get("/user", async (req, res) => {
-  const userEmail = req.body.emailId;
+// app.get("/user", async (req, res) => {
+//   const userEmail = req.body.emailId;
 
-  try {
-    const user = await User.find({ emailId: userEmail });
-    if (user.length === 0) {
-      return res.status(400).send("User not found");
-    } else {
-      return res.status(200).send(user);
-    }
-  } catch (err) {
-    res.status(500).send("Something went wrong");
-  }
-});
+//   try {
+//     const user = await User.find({ emailId: userEmail });
+//     if (user.length === 0) {
+//       return res.status(400).send("User not found");
+//     } else {
+//       return res.status(200).send(user);
+//     }
+//   } catch (err) {
+//     res.status(500).send("Something went wrong");
+//   }
+// });
 
 // FEED API - GET /feed -get all the users from the database
-app.get("/feed", async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.send(users);
-  } catch (err) {
-    res.status(500).send("Something went wrong");
-  }
-});
+// app.get("/feed", async (req, res) => {
+//   try {
+//     const users = await User.find({});
+//     res.send(users);
+//   } catch (err) {
+//     res.status(500).send("Something went wrong");
+//   }
+// });
 
 // Get user by findone
 
-app.get("/user/findOne", async (req, res) => {
+// app.get("/user/findOne", async (req, res) => {
+//   try {
+//     const users = await User.findOne({ emailId: req.body.emailId });
+//     if (!users) {
+//       return res.status(500).send("User not found");
+//     }
+//     res.send(users);
+//     res.send(users);
+//   } catch (err) {
+//     res.status(500).send("Something went wrong");
+//   }
+// });
+
+// Get users by Id
+
+// app.get("/user/:id", async (req, res) => {
+//   try {
+//     const user = await User.findById(req.params.id);
+
+//     if (!user) {
+//       return res.status(404).send("User not found");
+//     }
+
+//     res.status(200).json(user);
+//   } catch (error) {
+//     res.status(400).send("Invalid user id");
+//   }
+// });
+
+// DELETE USER BY ID
+// app.delete("/user", async (req, res) => {
+//   const userId = req.body.userId;
+//   try{
+// const user = await User.findByIdAndDelete({ _id: userId });
+//      const user = await User.findByIdAndDelete(userId);
+//     res.send("User Deleted Successfully");
+//   } catch (err){
+//     res.status(500).send("Soemthing went wrong");
+//   }
+// });
+
+// Update data from the user: Option 1 
+
+// app.patch("/user/:id", async (req, res) => {
+//   const userId = req.params.id;
+//   const data = req.body;
+//   try {
+//     const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+//       returnDocument: "after",
+//     });
+//     console.log(user);
+//     res.send(user);
+//   } catch (err) {
+//     res.status(500).send("Something went wrong");
+//   }
+// });
+
+// Update data from the user: Option 2 
+
+
+app.patch("/user", async (req, res) => {
+  const userId = req.body.userId;
+  const data = req.body;
   try {
-    const users = await User.findOne({ emailId: req.body.emailId });
-    if (!users) {
-      return res.status(500).send("User not found");
-    }
-    res.send(users);
-    res.send(users);
+    const user = await User.findByIdAndUpdate({ _id: userId }, data, {
+      returnDocument: "after",
+    });
+    console.log(user);
+    res.send(user);
   } catch (err) {
     res.status(500).send("Something went wrong");
   }
 });
-
 connectDB()
   .then(() => {
     console.log("DataBase Connection Established...");
